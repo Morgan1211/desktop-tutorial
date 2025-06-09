@@ -1,73 +1,40 @@
-[debug] [2025-06-09T17:49:09.011Z] ----------------------------------------------------------------------
-[debug] [2025-06-09T17:49:09.013Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Morgan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
-[debug] [2025-06-09T17:49:09.014Z] CLI Version:   14.6.0
-[debug] [2025-06-09T17:49:09.014Z] Platform:      win32
-[debug] [2025-06-09T17:49:09.014Z] Node Version:  v22.16.0
-[debug] [2025-06-09T17:49:09.014Z] Time:          Mon Jun 09 2025 17:49:09 GMT+0000 (Greenwich Mean Time)
-[debug] [2025-06-09T17:49:09.014Z] ----------------------------------------------------------------------
-[debug] 
-[debug] [2025-06-09T17:49:09.274Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2025-06-09T17:49:09.275Z] > authorizing via signed-in user (alexanderamorgan5@gmail.com)
-[info] 
-     ######## #### ########  ######## ########     ###     ######  ########
-     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
-     ######    ##  ########  ######   ########  #########  ######  ######
-     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
-     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+rules_version = '2';
 
-You're about to initialize a Firebase project in this directory:
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
 
-  C:\Users\Morgan\OneDrive\Desktop\moon
+    // User profile images
+    match /users/{userId}/profile.jpg {
+      allow read: if true;
+      allow write: if isAuthenticated() && isOwner(userId);
+    }
 
-Before we get started, keep in mind:
+    // Prescription images
+    match /prescriptions/{userId}/{prescriptionId} {
+      allow read: if isAuthenticated() && (
+        isOwner(userId) || 
+        request.auth.token.admin == true
+      );
+      allow write: if isAuthenticated() && isOwner(userId);
+    }
 
-  * You are initializing within an existing Firebase project directory
+    // Product images
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && request.auth.token.admin == true;
+    }
 
-[info] 
-=== Project Setup
-[info] 
-[info] First, let's associate this project directory with a Firebase project.
-[info] You can create multiple project aliases by running firebase use --add, 
-[info] but for now we'll just set up a default project.
-[info] 
-[debug] [2025-06-09T17:50:18.302Z] Using project from CLI flag: doctor-f8c0e
-[debug] [2025-06-09T17:50:18.304Z] Checked if tokens are valid: true, expires at: 1749492489901
-[debug] [2025-06-09T17:50:18.305Z] Checked if tokens are valid: true, expires at: 1749492489901
-[debug] [2025-06-09T17:50:18.307Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/doctor-f8c0e [none]
-[debug] [2025-06-09T17:50:19.377Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/doctor-f8c0e 200
-[debug] [2025-06-09T17:50:19.377Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/doctor-f8c0e {"projectId":"doctor-f8c0e","projectNumber":"833149955983","displayName":"Doctor","name":"projects/doctor-f8c0e","resources":{"hostingSite":"doctor-f8c0e"},"state":"ACTIVE","etag":"1_674a62be-e25f-4e12-b8d0-cd4dd7ba4c5d"}
-[info] i  Using project doctor-f8c0e (Doctor) 
-[info] 
-=== Hosting Setup
-[debug] [2025-06-09T17:50:19.384Z] Checked if tokens are valid: true, expires at: 1749492489901
-[debug] [2025-06-09T17:50:19.384Z] Checked if tokens are valid: true, expires at: 1749492489901
-[debug] [2025-06-09T17:50:19.384Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/doctor-f8c0e [none]
-[debug] [2025-06-09T17:50:19.861Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/doctor-f8c0e 200
-[debug] [2025-06-09T17:50:19.861Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/doctor-f8c0e {"projectId":"doctor-f8c0e","projectNumber":"833149955983","displayName":"Doctor","name":"projects/doctor-f8c0e","resources":{"hostingSite":"doctor-f8c0e"},"state":"ACTIVE","etag":"1_674a62be-e25f-4e12-b8d0-cd4dd7ba4c5d"}
-[info] 
-[info] Your public directory is the folder (relative to your project directory) that
-[info] will contain Hosting assets to be uploaded with firebase deploy. If you
-[info] have a build process for your assets, use your build's output directory.
-[info] 
-[debug] [2025-06-09T17:50:50.727Z] >>> [apiv2][query] GET https://www.gstatic.com/firebasejs/releases.json [none]
-[debug] [2025-06-09T17:50:51.359Z] <<< [apiv2][status] GET https://www.gstatic.com/firebasejs/releases.json 200
-[debug] [2025-06-09T17:50:51.359Z] <<< [apiv2][body] GET https://www.gstatic.com/firebasejs/releases.json {"current":{"version":"11.9.0","browserURL":"https://www.gstatic.com/firebasejs/11.9.0/firebase.js","packageURL":"https://www.gstatic.com/firebasejs/11.9.0/firebase.tgz"},"live":{"version":"11.9","browserURL":"https://www.gstatic.com/firebasejs/live/11.9/firebase.js","packageURL":"https://www.gstatic.com/firebasejs/live/11.9/firebase.tgz"},"components":{"ai":"https://www.gstatic.com/firebasejs/11.9.0/firebase-ai.js","analytics":"https://www.gstatic.com/firebasejs/11.9.0/firebase-analytics.js","app":"https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js","app-check":"https://www.gstatic.com/firebasejs/11.9.0/firebase-app-check.js","auth":"https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js","auth/cordova":"https://www.gstatic.com/firebasejs/11.9.0/firebase-auth/cordova.js","auth/web-extension":"https://www.gstatic.com/firebasejs/11.9.0/firebase-auth/web-extension.js","functions":"https://www.gstatic.com/firebasejs/11.9.0/firebase-functions.js","firestore":"https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js","firestore/lite":"https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore/lite.js","installations":"https://www.gstatic.com/firebasejs/11.9.0/firebase-installations.js","storage":"https://www.gstatic.com/firebasejs/11.9.0/firebase-storage.js","performance":"https://www.gstatic.com/firebasejs/11.9.0/firebase-performance.js","remote-config":"https://www.gstatic.com/firebasejs/11.9.0/firebase-remote-config.js","messaging":"https://www.gstatic.com/firebasejs/11.9.0/firebase-messaging.js","messaging/sw":"https://www.gstatic.com/firebasejs/11.9.0/firebase-messaging/sw.js","database":"https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js","vertexai":"https://www.gstatic.com/firebasejs/11.9.0/firebase-vertexai.js","data-connect":"https://www.gstatic.com/firebasejs/11.9.0/firebase-data-connect.js","firestore.memory":"https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.memory.js"}}
-[info] i  public/index.html is unchanged 
-[info] 
-[info] i  Didn't detect a .git folder. Assuming C:\Users\Morgan\OneDrive\Desktop\moon is the project root. 
-[info] i  Authorizing with GitHub to upload your service account to a GitHub repository's secrets store. 
-[info] 
-[info] Visit this URL on this device to log in:
-[info] https://github.com/login/oauth/authorize?client_id=89cf50f02ac6aaed3484&state=790936781&redirect_uri=http%3A%2F%2Flocalhost%3A9005&scope=read%3Auser%20repo%20public_repo
-[info] 
-[info] Waiting for authentication...
-[debug] [2025-06-09T17:50:52.761Z] >>> [apiv2][query] POST https://github.com/login/oauth/access_token [none]
-[debug] [2025-06-09T17:50:52.761Z] >>> [apiv2][body] POST https://github.com/login/oauth/access_token [stream]
-[debug] [2025-06-09T17:50:53.535Z] <<< [apiv2][status] POST https://github.com/login/oauth/access_token 200
-[debug] [2025-06-09T17:50:53.535Z] <<< [apiv2][body] POST https://github.com/login/oauth/access_token {"access_token":"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","token_type":"bearer","scope":"read:user,repo"}
-[debug] [2025-06-09T17:50:53.541Z] >>> [apiv2][query] GET https://api.github.com/user [none]
-[debug] [2025-06-09T17:50:54.498Z] <<< [apiv2][status] GET https://api.github.com/user 200
-[debug] [2025-06-09T17:50:54.499Z] <<< [apiv2][body] GET https://api.github.com/user {"login":"Morgan1211","id":139893022,"node_id":"U_kgDOCFaZHg","avatar_url":"https://avatars.githubusercontent.com/u/139893022?v=4","gravatar_id":"","url":"https://api.github.com/users/Morgan1211","html_url":"https://github.com/Morgan1211","followers_url":"https://api.github.com/users/Morgan1211/followers","following_url":"https://api.github.com/users/Morgan1211/following{/other_user}","gists_url":"https://api.github.com/users/Morgan1211/gists{/gist_id}","starred_url":"https://api.github.com/users/Morgan1211/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Morgan1211/subscriptions","organizations_url":"https://api.github.com/users/Morgan1211/orgs","repos_url":"https://api.github.com/users/Morgan1211/repos","events_url":"https://api.github.com/users/Morgan1211/events{/privacy}","received_events_url":"https://api.github.com/users/Morgan1211/received_events","type":"User","user_view_type":"private","site_admin":false,"name":"Morgan ","company":null,"blog":"","location":null,"email":null,"hireable":null,"bio":null,"twitter_username":null,"notification_email":null,"public_repos":1,"public_gists":0,"followers":0,"following":1,"created_at":"2023-07-18T15:35:59Z","updated_at":"2025-06-09T17:15:48Z","private_gists":0,"total_private_repos":1,"owned_private_repos":1,"disk_usage":0,"collaborators":0,"two_factor_authentication":false,"plan":{"name":"free","space":976562499,"collaborators":0,"private_repos":10000}}
-[info] 
-[info] +  Success! Logged into GitHub as Morgan1211 
-[info] 
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
