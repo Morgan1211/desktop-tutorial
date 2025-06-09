@@ -132,7 +132,7 @@
         /* ===== DASHBOARD SCREEN ===== */
         .dashboard {
             padding: 20px;
-            padding-bottom: 70px; /* Space for bottom nav */
+            padding-bottom: 70px;
         }
 
         .header {
@@ -609,35 +609,22 @@
     </div>
 
     <!-- ===== FIREBASE SDK ===== -->
-    <!-- Firebase App -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<!-- Firebase Auth -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<!-- Firebase Firestore -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
     <!-- ===== APP JAVASCRIPT ===== -->
     <script>
-        < type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDMG6OhWOAOBzM6R4v2Me1gMM7g19fkOQ0",
-    authDomain: "device-streaming-54e398fe.firebaseapp.com",
-    projectId: "device-streaming-54e398fe",
-    storageBucket: "device-streaming-54e398fe.firebasestorage.app",
-    messagingSenderId: "638164037230",
-    appId: "1:638164037230:web:6c9d8c0a3c0aff7d4ec07f"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
-};
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMG6OhWOAOBzM6R4v2Me1gMM7g19fkOQ0",
+            authDomain: "https://github.com/Morgan1211/desktop-tutorial",
+            projectId: "device-streaming-54e398fe",
+            storageBucket: "device-streaming-54e398fe.firebasestorage.app",
+            messagingSenderId: "638164037230",
+            appId: "YOUR_APP_ID",
+            measurementId: "1:638164037230:web:6c9d8c0a3c0aff7d4ec07f"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -825,21 +812,4 @@
             }
         });
     </script>
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
-</body>
-</html>
-
-};
